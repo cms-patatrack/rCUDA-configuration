@@ -1,0 +1,13 @@
+#! /bin/bash
+
+# stop the rCUDA daemon
+pidof rCUDAd >& /dev/null && killall rCUDAd
+sleep 1
+
+# stop the rCUDA license server
+pidof rCUDAls >& /dev/null && killall rCUDAls
+sleep 1
+
+# restart the local firewall
+#systemctl start firewalld
+systemctl start iptables

@@ -1,0 +1,21 @@
+#! /bin/bash
+
+# set up the CUDA envirnment
+export PATH=/usr/local/cuda-9.2/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-9.2/lib64:$LD_LIBRARY_PATH
+
+# set up the rCUDA environment
+export RCUDA_NETWORK=TCP
+
+# increase the maximum size that may be locked into memory
+ulimit -l unlimited
+
+# disable the local firewall
+#systemctl stop firewalld
+systemctl stop iptables
+
+# start the rCUDA license server
+pidof rCUDAls >& /dev/null || { /usr/local/rCUDA/bin/rCUDAls -i -v & sleep 1; }
+
+# start the rCUDA daemon
+pidof rCUDAd >& /dev/null || { /usr/local/rCUDA/bin/rCUDAd -i -v & sleep 2; }
